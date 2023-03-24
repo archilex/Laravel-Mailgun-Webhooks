@@ -30,13 +30,13 @@ class MailgunFlagRepository
 
     /**
      * @param array $data
-     * @param int $eventId
+     * @param int $emailId
      * @return mixed
      */
-    public function createFlags(array $data, int $eventId)
+    public function createFlags(array $data, int $emailId)
     {
         return $this->model->create([
-            'event_id' => $eventId,
+            'email_id' => $emailId,
             'is_routed' => $data['is-routed'] ?? 0,
             'is_authenticated' => $data['is-authenticated'] ?? 0,
             'is_system_test' => $data['is-system_test'] ?? 0,

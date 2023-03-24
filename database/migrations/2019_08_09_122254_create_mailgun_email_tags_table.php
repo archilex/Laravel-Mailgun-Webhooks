@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMailgunEventTagsTable extends Migration
+class CreateMailgunEmailTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateMailgunEventTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mailgun_event_tags', function (Blueprint $table) {
+        Schema::create('mailgun_email_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('event_id')->index();
+            $table->unsignedBigInteger('email_id')->index();
             $table->unsignedBigInteger('tag_id')->index();
             $table->timestamps();
 
-            $table->foreign('event_id')
+            $table->foreign('email_id')
                 ->references('id')
-                ->on('mailgun_events')
+                ->on('mailgun_emails')
                 ->onDelete('cascade');
 
             $table->foreign('tag_id')
@@ -38,6 +38,6 @@ class CreateMailgunEventTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mailgun_event_tags');
+        Schema::dropIfExists('mailgun_email_tags');
     }
 }

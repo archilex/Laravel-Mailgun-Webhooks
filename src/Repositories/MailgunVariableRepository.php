@@ -30,14 +30,14 @@ class MailgunVariableRepository
 
     /**
      * @param array $data
-     * @param int $eventId
+     * @param int $emailId
      * @return mixed
      */
-    public function processEventVariables(array $data, int $eventId)
+    public function processEmailVariables(array $data, int $emailId)
     {
         foreach ($data as $key => $value){
             if( isset($key, $value) ){
-                $this->createVariables($eventId, $key, $value);
+                $this->createVariables($emailId, $key, $value);
             }
         }
 
@@ -45,15 +45,15 @@ class MailgunVariableRepository
     }
 
     /**
-     * @param int $eventId
+     * @param int $emailId
      * @param string $key
      * @param string $value
      * @return mixed
      */
-    private function createVariables(int $eventId, string $key, string $value)
+    private function createVariables(int $emailId, string $key, string $value)
     {
         return $this->model->create([
-            'event_id' => $eventId,
+            'email_id' => $emailId,
             'key' => $key,
             'value' => $value
         ]);

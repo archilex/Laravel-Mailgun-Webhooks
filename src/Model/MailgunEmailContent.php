@@ -4,18 +4,18 @@ namespace Biegalski\LaravelMailgunWebhooks\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MailgunEventContent extends Model
+class MailgunEmailContent extends Model
 {
     /**
      * @var string
      */
-    protected $table = 'mailgun_event_content';
+    protected $table = 'mailgun_email_content';
 
     /**
      * @var array
      */
     protected $fillable = [
-        'event_id',
+        'email_id',
         'subject',
         'to',
         'content_type',
@@ -29,8 +29,8 @@ class MailgunEventContent extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function event(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function email(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(MailgunEvent::class, 'event_id');
+        return $this->belongsTo(MailgunEmail::class, 'email_id');
     }
 }

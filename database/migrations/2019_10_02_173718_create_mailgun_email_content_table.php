@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMailgunEventContentTable extends Migration
+class CreateMailgunEmailContentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateMailgunEventContentTable extends Migration
      */
     public function up()
     {
-        Schema::create('mailgun_event_content', function (Blueprint $table) {
+        Schema::create('mailgun_email_content', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('event_id')->index();
+            $table->unsignedBigInteger('email_id')->index();
             $table->string('subject')->nullable();
             $table->string('to')->nullable();
             $table->string('content_type')->nullable();
@@ -26,9 +26,9 @@ class CreateMailgunEventContentTable extends Migration
             $table->mediumText('body_plain')->nullable();
             $table->timestamps();
 
-            $table->foreign('event_id')
+            $table->foreign('email_id')
                 ->references('id')
-                ->on('mailgun_events')
+                ->on('mailgun_emails')
                 ->onDelete('cascade');
         });
     }
@@ -40,6 +40,6 @@ class CreateMailgunEventContentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mailgun_event_content');
+        Schema::dropIfExists('mailgun_email_content');
     }
 }
