@@ -14,7 +14,7 @@ use Biegalski\LaravelMailgunWebhooks\Model\MailgunEmailContent;
 class MailgunEventRepository
 {
     /**
-     * @var MailgunEventContent
+     * @var MailgunEmailContent
      */
     private $content;
 
@@ -36,7 +36,7 @@ class MailgunEventRepository
      * @param MailgunEmail $email
      */
     public function __construct(
-        MailgunEventContent $content,
+        MailgunEmailContent $content,
         MailgunEvent $model,
         MailgunEmail $email,
     )
