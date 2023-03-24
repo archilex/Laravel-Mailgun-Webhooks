@@ -103,20 +103,16 @@ class MailgunWebookService
      */
     private function storeContent(int $eventId, string $storageUrl)
     {
-        try {
-            $getContent = $this->guzzle->request(
-                'GET',
-                $storageUrl,
-                [
-                    'auth' => [
-                        'api',
-                        config('services.mailgun.secret')
-                    ]
+        $getContent = $this->guzzle->request(
+            'GET',
+            $storageUrl,
+            [
+                'auth' => [
+                    'api',
+                    config('services.mailgun.secret')
                 ]
-            );
-        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
-            Log::error($exception->getResponse()->getBody()->getContents());
-        }
+            ]
+        );
 
         return $this->event->storeContent(
             $eventId,
