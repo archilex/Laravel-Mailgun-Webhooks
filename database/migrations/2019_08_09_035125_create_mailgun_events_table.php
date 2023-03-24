@@ -18,30 +18,14 @@ class CreateMailgunEventsTable extends Migration
             // Required for inspecting column type of tables with enum fields in it
             DB::getDoctrineConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
 
-            if(Schema::getColumnType(config('mailgun-webhooks.user_table.name', 'users'), 'id') === 'integer'){
-                $colType = 'unsignedInteger';
-            }else{
-                $colType = 'unsignedBigInteger';
-            }
-
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('email_id')->index();
             $table->enum('event_type', config('mailgun-webhooks.event_types') )->index();
-            $table->$colType('user_id')->index()->nullable();
-            $table->string('uuid');
-            $table->string('recipient_domain')->nullable();
-            $table->string('recipient_user')->nullable();
-            $table->string('msg_to')->nullable();
-            $table->string('msg_from')->nullable();
-            $table->string('msg_subject')->nullable();
-            $table->string('msg_id')->nullable();
-            $table->integer('msg_code')->nullable();
-            $table->integer('attempt_number')->default(1);
-            $table->boolean('attachments')->default(0);
             $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references( config('mailgun-webhooks.user_table.identifier_key') )
-                ->on( config('mailgun-webhooks.user_table.name') )
+            $table->foreign('email_id')
+                ->references('id')
+                ->on('mailgun_emails')
                 ->onDelete('cascade');
         });
     }

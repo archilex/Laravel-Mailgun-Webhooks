@@ -60,7 +60,7 @@ class MailgunWebookService
         }
 
         try{
-            $eventId = $this->storeEvent($eventType, $data, $this->user);
+            $emailId = $this->storeEvent($eventType, $data, $this->user);
 
             /**
              * @desc If content logging is enabled
@@ -68,10 +68,10 @@ class MailgunWebookService
             if( config('mailgun-webhooks.options.disable_content_logging') !== true ){
 
                 /**
-                 * @desc If event type is Delivered Messages and eventId integer is returned and Mailgun contains storage URL - lets store that messages content
+                 * @desc If event type is Delivered Messages and emailId integer is returned and Mailgun contains storage URL - lets store that messages content
                  */
-                if( is_int($eventId) && isset($data['event-data']['storage']['url']) && in_array($eventType, $this->saveContentEventTypes, true) ){
-                    $this->storeContent($eventId, $data['event-data']['storage']['url']);
+                if( is_int($emailId) && isset($data['event-data']['storage']['url']) && in_array($eventType, $this->saveContentEventTypes, true) ){
+                    $this->storeContent($emailId, $data['event-data']['storage']['url']);
                 }
             }
 
@@ -96,12 +96,12 @@ class MailgunWebookService
     }
 
     /**
-     * @param int $eventId
+     * @param int $emailId
      * @param string $storageUrl
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function storeContent(int $eventId, string $storageUrl)
+    private function storeContent(int $emailId, string $storageUrl)
     {
         $getContent = $this->guzzle->request(
             'GET',
@@ -115,7 +115,7 @@ class MailgunWebookService
         );
 
         return $this->event->storeContent(
-            $eventId,
+            $emailId,
             json_decode( $getContent->getBody()->getContents(), true )
         );
     }

@@ -5,25 +5,25 @@ namespace Biegalski\LaravelMailgunWebhooks\Model;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class MailgunEventTag
+ * Class MailgunEmailTag
  * @package Biegalski\LaravelMailgunWebhooks\Model
  */
-class MailgunEventTag extends Model
+class MailgunEmailTag extends Model
 {
     /**
      * @var array
      */
     protected $fillable = [
-        'event_id',
+        'email_id',
         'tag_id'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function event(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function email(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(MailgunEvent::class, 'event_id');
+        return $this->belongsTo(MailgunEmail::class, 'email_id');
     }
 
     /**

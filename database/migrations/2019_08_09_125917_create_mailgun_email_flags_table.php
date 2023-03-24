@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMailgunEventFlagsTable extends Migration
+class CreateMailgunEmailFlagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,16 +15,16 @@ class CreateMailgunEventFlagsTable extends Migration
     {
         Schema::create('mailgun_flags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('event_id')->index();
+            $table->unsignedBigInteger('email_id')->index();
             $table->boolean('is_routed')->default(0);
             $table->boolean('is_authenticated')->default(0);
             $table->boolean('is_system_test')->default(0);
             $table->boolean('is_test_mode')->default(0);
             $table->timestamps();
 
-            $table->foreign('event_id')
+            $table->foreign('email_id')
                 ->references('id')
-                ->on('mailgun_events')
+                ->on('mailgun_emails')
                 ->onDelete('cascade');
         });
     }

@@ -3,7 +3,7 @@
 namespace Biegalski\LaravelMailgunWebhooks\Repositories;
 
 use Biegalski\LaravelMailgunWebhooks\Model\MailgunTag;
-use Biegalski\LaravelMailgunWebhooks\Model\MailgunEventTag;
+use Biegalski\LaravelMailgunWebhooks\Model\MailgunEmailTag;
 
 /**
  * Class MailgunTagRepository
@@ -17,23 +17,23 @@ class MailgunTagRepository
     private $model;
 
     /**
-     * @var MailgunEventTag
+     * @var MailgunEmailTag
      */
-    private $eventTag;
+    private $emailTag;
 
     /**
      * MailgunTagRepository constructor.
      * @param MailgunTag $model
-     * @param MailgunEventTag $eventTag
+     * @param MailgunEmailTag $emailTag
      */
-    public function __construct(MailgunTag $model, MailgunEventTag $eventTag)
+    public function __construct(MailgunTag $model, MailgunEmailTag $emailTag)
     {
         $this->model = $model;
-        $this->eventTag = $eventTag;
+        $this->emailTag = $emailTag;
 
         if( config()->has('mailgun-webhooks.custom_database') && config('mailgun-webhooks.custom_database') !== null ){
             $this->model->setConnection(config('mailgun-webhooks.custom_database'));
-            $this->eventTag->setConnection(config('mailgun-webhooks.custom_database'));
+            $this->emailTag->setConnection(config('mailgun-webhooks.custom_database'));
         }
     }
 
@@ -48,16 +48,16 @@ class MailgunTagRepository
 
     /**
      * @param array $tags
-     * @param int $eventId
+     * @param int $emailId
      */
-    public function tagEvent(array $tags, int $eventId)
+    public function tagEmail(array $tags, int $emailId)
     {
         foreach ($tags as $tag){
             $findTag = $this->findOrCreateTag($tag);
 
             if( isset($findTag->id) ){
-                $this->eventTag->create([
-                        'event_id' => $eventId,
+                $this->emailTag->create([
+                        'email_id' => $emailId,
                         'tag_id' => $findTag->id
                     ]);
             }
