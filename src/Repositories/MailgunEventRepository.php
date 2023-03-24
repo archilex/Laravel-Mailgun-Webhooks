@@ -3,9 +3,9 @@
 namespace Biegalski\LaravelMailgunWebhooks\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use Biegalski\LaravelMailgunWebhooks\Model\MailgunEmail;
 use Biegalski\LaravelMailgunWebhooks\Model\MailgunEvent;
 use Biegalski\LaravelMailgunWebhooks\Model\MailgunEmailContent;
+use Biegalski\LaravelMailgunWebhooks\Repositories\MailgunEmailRepository;
 
 /**
  * Class MailgunEventRepository
@@ -24,7 +24,7 @@ class MailgunEventRepository
     private $model;
 
     /**
-     * @var MailgunEmail
+     * @var \Biegalski\LaravelMailgunWebhooks\Repositories\MailgunEmailRepository
      */
     private $email;
 
@@ -33,12 +33,12 @@ class MailgunEventRepository
      * MailgunEventRepository constructor.
      * @param MailgunEmailContent $content
      * @param MailgunEvent $model
-     * @param MailgunEmail $email
+     * @param \Biegalski\LaravelMailgunWebhooks\Repositories\MailgunEmailRepository $email
      */
     public function __construct(
         MailgunEmailContent $content,
         MailgunEvent $model,
-        MailgunEmail $email,
+        MailgunEmailRepository $email,
     )
     {
         $this->content = $content;
