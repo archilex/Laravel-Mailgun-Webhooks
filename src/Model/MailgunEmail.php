@@ -20,13 +20,6 @@ class MailgunEmail extends Model
     ];
 
     /**
-     * @var array
-     */
-    protected $dispatchesEvents = [
-        'created' => \Biegalski\LaravelMailgunWebhooks\Events\CreatedEvent::class,
-    ];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
