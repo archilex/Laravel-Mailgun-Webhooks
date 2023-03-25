@@ -67,24 +67,22 @@ class MailgunEmailRepository
      */
     public function storeEmail(array $data, $userId)
     {
-        $email = $this->model->firstWhere('msg_id', $this->getHeaders('msg_id', $data));
-
-        if (! $email instanceof MailgunEmail) {
-            $email = $this->model->create([
-                'uuid' => $data['event-data']['id'],
-                'recipient_domain' => $data['event-data']['recipient-domain'] ?? null,
-                'recipient_user' => $data['event-data']['recipient'] ?? null,
-                'msg_to' => $this->getHeaders('to', $data),
-                'msg_from' => $this->getHeaders('from', $data),
-                'msg_subject' => $this->getHeaders('subject', $data),
-                'msg_id' => $this->getHeaders('msg_id', $data),
-                'msg_code' => $data['event-data']['delivery-status']['code'] ?? null,
-                'attempt_number' => $data['event-data']['delivery-status']['attempt-no'] ?? 1,
-                'attachments' => $this->areAttachmentsIncluded($data),
-                'user_id' => $userId,
-            ]);
-        }
-
+        $email = $this->model->firstOrCreate([
+            'msg_id' => $this->getHeaders('msg_id', $data),
+        ], [
+            'uuid' => $data['event-data']['id'],
+            'recipient_domain' => $data['event-data']['recipient-domain'] ?? null,
+            'recipient_user' => $data['event-data']['recipient'] ?? null,
+            'msg_to' => $this->getHeaders('to', $data),
+            'msg_from' => $this->getHeaders('from', $data),
+            'msg_subject' => $this->getHeaders('subject', $data),
+            'msg_id' => $this->getHeaders('msg_id', $data),
+            'msg_code' => $data['event-data']['delivery-status']['code'] ?? null,
+            'attempt_number' => $data['event-data']['delivery-status']['attempt-no'] ?? 1,
+            'attachments' => $this->areAttachmentsIncluded($data),
+            'user_id' => $userId,
+        ]);
+        
         /**
          * @desc Check if flag logging is disabled
          */
@@ -111,6 +109,8 @@ class MailgunEmailRepository
                 $this->variable->processEmailVariables($data['event-data']['user-variables'], $email->id);
             }
         }
+
+        return $email;
     }
 
     /**
