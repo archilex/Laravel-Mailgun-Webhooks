@@ -52,7 +52,7 @@ class MailgunVariableRepository
      */
     private function createVariables(int $emailId, string $key, string $value)
     {
-        return $this->model->create([
+        return $this->model->firstOrCreate([
             'email_id' => $emailId,
             'key' => $key,
             'value' => $value

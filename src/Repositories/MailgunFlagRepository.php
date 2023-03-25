@@ -35,8 +35,9 @@ class MailgunFlagRepository
      */
     public function createFlags(array $data, int $emailId)
     {
-        return $this->model->create([
+        return $this->model->firstOrCreate([
             'email_id' => $emailId,
+        ], [
             'is_routed' => $data['is-routed'] ?? 0,
             'is_authenticated' => $data['is-authenticated'] ?? 0,
             'is_system_test' => $data['is-system_test'] ?? 0,

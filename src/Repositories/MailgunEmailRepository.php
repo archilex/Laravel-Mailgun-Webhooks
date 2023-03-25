@@ -69,23 +69,21 @@ class MailgunEmailRepository
     {
         $email = $this->model->firstWhere('msg_id', $this->getHeaders('msg_id', $data));
 
-        if ($email instanceof MailgunEmail) {
-            return $email;
+        if (! $email instanceof MailgunEmail) {
+            $email = $this->model->create([
+                'uuid' => $data['event-data']['id'],
+                'recipient_domain' => $data['event-data']['recipient-domain'] ?? null,
+                'recipient_user' => $data['event-data']['recipient'] ?? null,
+                'msg_to' => $this->getHeaders('to', $data),
+                'msg_from' => $this->getHeaders('from', $data),
+                'msg_subject' => $this->getHeaders('subject', $data),
+                'msg_id' => $this->getHeaders('msg_id', $data),
+                'msg_code' => $data['event-data']['delivery-status']['code'] ?? null,
+                'attempt_number' => $data['event-data']['delivery-status']['attempt-no'] ?? 1,
+                'attachments' => $this->areAttachmentsIncluded($data),
+                'user_id' => $userId,
+            ]);
         }
-
-        $email = $this->model->create([
-            'uuid' => $data['event-data']['id'],
-            'recipient_domain' => $data['event-data']['recipient-domain'] ?? null,
-            'recipient_user' => $data['event-data']['recipient'] ?? null,
-            'msg_to' => $this->getHeaders('to', $data),
-            'msg_from' => $this->getHeaders('from', $data),
-            'msg_subject' => $this->getHeaders('subject', $data),
-            'msg_id' => $this->getHeaders('msg_id', $data),
-            'msg_code' => $data['event-data']['delivery-status']['code'] ?? null,
-            'attempt_number' => $data['event-data']['delivery-status']['attempt-no'] ?? 1,
-            'attachments' => $this->areAttachmentsIncluded($data),
-            'user_id' => $userId,
-        ]);
 
         /**
          * @desc Check if flag logging is disabled
