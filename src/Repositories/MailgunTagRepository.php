@@ -56,7 +56,7 @@ class MailgunTagRepository
             $findTag = $this->findOrCreateTag($tag);
 
             if( isset($findTag->id) ){
-                $this->emailTag->create([
+                $this->emailTag->firstOrCreate([
                         'email_id' => $emailId,
                         'tag_id' => $findTag->id
                     ]);
